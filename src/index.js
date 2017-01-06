@@ -1,15 +1,37 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import SearchBar from './components/search_bar';
+import axios from 'axios';
 
-import App from './components/app';
-import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+//
+// const axiosSearch =
+//  axios.get('http://localhost:9090/referral').then(function(data)
+// {console.log(data)});
+
+
+class App extends Component {
+    constructor(props){
+        super(props);
+        this.state = {referrals: []};
+
+        axios.get('http://localhost:9090/referral').then(function(data)
+       {
+           console.log(data);
+           this.setState({referrals:data})
+       });
+    }
+
+    render() {
+    return (
+        <div>
+            <SearchBar />
+        </div>
+)
+}
+}
+
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+    <App />, document.querySelector('.container')
+)
